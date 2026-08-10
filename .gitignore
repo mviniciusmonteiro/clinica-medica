@@ -1,0 +1,19 @@
+# Target do Maven
+target/
+
+# IDE e Editor
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+*.rsuser
+
+# Logs e Temporários
+*.log
+*.class
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
