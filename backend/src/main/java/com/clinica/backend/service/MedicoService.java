@@ -32,6 +32,24 @@ public class MedicoService {
                 .orElseThrow(() -> new RuntimeException("Médico não encontrado com ID: " + id));
     }
 
+    public Medico atualizar(Long id, Medico medico) {
+
+        Medico medicoExistente = buscarPorId(id);
+
+        if (!medicoExistente.getCrm().equals(medico.getCrm())) {
+            if (medicoRepository.existsByCrm(medico.getCrm())) {
+                throw new RuntimeException("Já existe um médico cadastrado com o CRM: " + medico.getCrm());
+            }
+        }
+
+        medicoExistente.setNome(medico.getNome());
+        medicoExistente.setCrm(medico.getCrm());
+        medicoExistente.setEspecialidade(medico.getEspecialidade());
+
+        return medicoRepository.save(medicoExistente);
+
+    }
+
     // Regra 4: Buscar médico por CRM
     public Medico buscarPorCrm(String crm) {
         return medicoRepository.findByCrm(crm)
