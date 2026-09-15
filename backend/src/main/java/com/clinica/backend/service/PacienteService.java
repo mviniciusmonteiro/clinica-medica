@@ -3,6 +3,8 @@ package com.clinica.backend.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.clinica.backend.domain.Paciente;
+import com.clinica.backend.exception.RecursoNaoEncontradoException;
+import com.clinica.backend.exception.RegraDeNegocioException;
 import com.clinica.backend.repository.PacienteRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ public class PacienteService {
 
     public Paciente salvar(Paciente paciente) {
         if (pacienteRepository.existsByCpf(paciente.getCpf())) {
-            throw new RuntimeException(("Já existe um paciente cadastrado com esse CPF."));
+            throw new RegraDeNegocioException("Já existe um paciente cadastrado com esse CPF.");
         }
         return pacienteRepository.save(paciente);
     }
@@ -26,7 +28,7 @@ public class PacienteService {
 
     public Paciente buscarPorId(Long id) {
         return pacienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado com id: " + id));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado com id: " + id));
     }
 
     public Paciente atualizar(Long id, Paciente paciente) {
@@ -34,7 +36,7 @@ public class PacienteService {
 
         if (!pacienteExistente.getCpf().equals(paciente.getCpf()) &&
                 pacienteRepository.existsByCpf(paciente.getCpf())) {
-            throw new RuntimeException("Já existe um paciente cadastrado com esse CPF.");
+            throw new RegraDeNegocioException("Já existe um paciente cadastrado com esse CPF.");
         }
 
         pacienteExistente.setNome(paciente.getNome());
@@ -46,3 +48,4 @@ public class PacienteService {
         return pacienteRepository.save(pacienteExistente);
     }
 }
+

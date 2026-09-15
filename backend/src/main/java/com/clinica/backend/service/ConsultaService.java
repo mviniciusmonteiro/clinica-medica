@@ -6,6 +6,8 @@ import com.clinica.backend.domain.Consulta;
 import com.clinica.backend.domain.Medico;
 import com.clinica.backend.domain.Paciente;
 import com.clinica.backend.dto.ConsultaDTO;
+import com.clinica.backend.exception.RecursoNaoEncontradoException;
+import com.clinica.backend.exception.RegraDeNegocioException;
 import com.clinica.backend.repository.ConsultaRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +24,10 @@ public class ConsultaService {
         Medico medico = medicoService.buscarPorId(dto.medicoId());
 
         if (consultaRepository.existsByMedicoIdAndDataHora(dto.medicoId(), dto.dataHora())) {
-            throw new RuntimeException("O médico já possui uma consulta agendada para este horário.");
+            throw new RegraDeNegocioException("O médico já possui uma consulta agendada para este horário.");
         }
         if (consultaRepository.existsByPacienteIdAndDataHora(dto.pacienteId(), dto.dataHora())) {
-            throw new RuntimeException("O paciente já possui uma consulta agendada para este horário.");
+            throw new RegraDeNegocioException("O paciente já possui uma consulta agendada para este horário.");
         }
 
         Consulta consulta = new Consulta();
@@ -43,7 +45,7 @@ public class ConsultaService {
 
     public Consulta buscarPorId(Long id) {
         return consultaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Consulta não encontrada com ID: " + id));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Consulta não encontrada com ID: " + id));
     }
 
     public void cancelar(Long id) {
@@ -51,3 +53,4 @@ public class ConsultaService {
         consultaRepository.delete(consulta);
     }
 }
+
