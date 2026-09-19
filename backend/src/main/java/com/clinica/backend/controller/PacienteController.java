@@ -57,11 +57,24 @@ public class PacienteController {
         return ResponseEntity.ok(PacienteDTO.toDto(paciente));
     }
 
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<PacienteDTO> buscarPorCpf(@PathVariable String cpf) {
+        Paciente paciente = pacienteService.buscarPorCpf(cpf);
+        return ResponseEntity.ok(PacienteDTO.toDto(paciente));
+    }
+
     // 4. Atualizar Paciente (PUT /api/pacientes/{id})
     @PutMapping("/{id}")
     public ResponseEntity<PacienteDTO> atualizar(@PathVariable Long id, @Valid @RequestBody PacienteDTO dto) {
         Paciente pacienteAtualizado = pacienteService.atualizar(id, dto.toEntity());
         return ResponseEntity.ok(PacienteDTO.toDto(pacienteAtualizado));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        pacienteService.deletar(id);
+        return ResponseEntity.noContent().build();
+
     }
 
 }

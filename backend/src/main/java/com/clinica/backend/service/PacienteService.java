@@ -31,6 +31,11 @@ public class PacienteService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado com id: " + id));
     }
 
+    public Paciente buscarPorCpf(String cpf) {
+        return pacienteRepository.findByCpf(cpf)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado com o cpf" + cpf));
+    }
+
     public Paciente atualizar(Long id, Paciente paciente) {
         Paciente pacienteExistente = buscarPorId(id);
 
@@ -47,5 +52,11 @@ public class PacienteService {
 
         return pacienteRepository.save(pacienteExistente);
     }
-}
 
+    public void deletar(Long id) {
+        if (!pacienteRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Paciente não encontrado com o id:" + id);
+        }
+        pacienteRepository.deleteById(id);
+    }
+}
