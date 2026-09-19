@@ -43,6 +43,32 @@ public class ConsultaService {
         return consultaRepository.findAll();
     }
 
+    public Consulta remarcar(Long id, ConsultaDTO dto) {
+        Consulta consulta = buscarPorId(id);
+
+        Medico medico = medicoService.buscarPorId(dto.medicoId());
+        Paciente paciente = pacienteService.buscarPorId(dto.pacienteId());
+
+        if (!consulta.getPaciente().getId().equals(dto.pacienteId())) {
+            throw new RegraDeNegocioException("Não é permitido alterar o paciente de uma consulta já agendada.");
+        }
+
+        if (consultaRepository.existsByMedicoIdAndDataHoraAndIdNot(dto.medicoId(), dto.dataHora(), id)) {
+            throw new RegraDeNegocioException("O médico já possui uma consulta agendada para este horário.");
+        }
+        if (consultaRepository.existsByPacienteIdAndDataHoraAndIdNot(dto.pacienteId(), dto.dataHora(), id)) {
+            throw new RegraDeNegocioException("O paciente já possui uma consulta agendada para este horário.");
+        }
+
+        consulta.setDataHora(dto.dataHora());
+        consulta.setMedico(medico);
+        consulta.setPaciente(paciente);
+        consulta.setObservacoes(dto.observacoes());
+
+        return consultaRepository.save(consulta);
+
+    }
+
     public Consulta buscarPorId(Long id) {
         return consultaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Consulta não encontrada com ID: " + id));
@@ -53,4 +79,3 @@ public class ConsultaService {
         consultaRepository.delete(consulta);
     }
 }
-

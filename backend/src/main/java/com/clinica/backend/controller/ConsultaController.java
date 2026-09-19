@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.clinica.backend.domain.Consulta;
@@ -49,6 +51,13 @@ public class ConsultaController {
                 .toList();
 
         return ResponseEntity.ok(lista);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ConsultaDTO> remarcar(@PathVariable Long id, @Valid @RequestBody ConsultaDTO dto) {
+        Consulta consulta = consultaService.remarcar(id, dto);
+
+        return ResponseEntity.ok(ConsultaDTO.toDTO(consulta));
     }
 
     // 3. Buscar Consulta por ID (GET /api/consultas/{id})
