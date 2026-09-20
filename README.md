@@ -1,64 +1,32 @@
-# Clínica Médica — Versão Legada (Java Swing)
+# Clínica Médica — API RESTful (Spring Boot)
+# 🏥 Clínica Médica — API RESTful (Spring Boot)
 
-Este repositório contém a versão original do sistema de **Clínica Médica**, desenvolvido em Java Desktop como Trabalho Final da disciplina de *Técnicas de Programação I*.
+[![Java](https://img.shields.io/badge/Java-25%20LTS-orange?logo=openjdk)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.7-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)
+[![JPA / Hibernate](https://img.shields.io/badge/JPA-Hibernate-blue?logo=hibernate)](https://hibernate.org/)
+[![Database](https://img.shields.io/badge/H2-In--Memory%20Database-lightgrey?logo=h2)](https://www.h2database.com/)
 
----
-
-## Visão Geral
-
-O sistema é uma aplicação desktop interativa voltada para a gestão de atendimentos em uma clínica médica. Ele permite o cadastro e controle de pacientes, médicos, atendentes e o agendamento de consultas.
-
----
-
-## Tecnologias Utilizadas
-
-- **Linguagem**: Java 18+ (Java SE)
-- **Interface Gráfica**: Java Swing (GUI Desktop)
-- **Gerenciador de Dependências**: Apache Maven
-- **Biblioteca Externa**: `JCalendar` 1.4 (para seleção visual de datas)
-- **Padrão de Arquitetura**: MVC (Model-View-Controller) com padrão comportamental **Observer** (`ObservableCRUD` / `Observador`)
-- **Persistência de Dados**: Armazenamento em arquivos de texto plano (`.txt`) localizados na pasta `./db/`:
-  - `pacientes.txt`
-  - `medicos.txt`
-  - `consultas.txt`
-  - `usuarios.txt`
+> Sistema de gestão clínica desenvolvido originalmente em Java Swing (desktop) e atualmente em processo de **refatoração e modernização para uma arquitetura corporativa em nuvem baseada em API RESTful**.
 
 ---
 
-## Funcionalidades
+## 🧭 Sobre a Refatoração & Estrutura de Branches
 
-- **Autenticação & Controle de Acesso**: Tela de Login com suporte aos perfis de **Paciente** e **Atendente**.
-- **Gestão de Pacientes**: Cadastro, edição, busca por CPF e remoção de dados dos pacientes.
-- **Gestão de Médicos**: Cadastro, edição por CRM, busca e listagem de médicos e suas especialidades.
-- **Agendamento de Consultas**: Incluir, editar, cancelar e buscar consultas filtradas por data, médico ou paciente, incluindo validação manual de choques de horário.
-- **Gestão de Atendentes**: Gerenciamento de credenciais de acesso dos atendentes.
+Este repositório documenta a evolução prática de um sistema legado para uma arquitetura moderna:
 
----
-
-## Como Executar
-
-### Pré-requisitos
-- **Java JDK 17 ou superior** instalado.
-- **Maven** instalado e configurado no PATH (ou utilize uma IDE como NetBeans, VSCode ou IntelliJ).
-
-### Passo a Passo
-
-1. **Clone a branch legada**:
-   ```bash
-   git clone -b legacy https://github.com/mviniciusmonteiro/clinica-medica.git
-   cd clinica-medica
-   ```
-
-2. **Compilar e Executar via Maven**:
-   ```bash
-   mvn clean compile
-   mvn exec:java -Dexec.mainClass="clinica.TelaLogin"
-   ```
+* **Branch [`legacy`](https://github.com/mviniciusmonteiro/clinica-medica/tree/legacy)**: Preserva o código original do sistema desktop em Java Swing com persistência de dados em arquivos de texto plano (`.txt`).
+* **Branch `main`**: Contém a versão moderna da aplicação com backend REST em Spring Boot e boas práticas da indústria.
 
 ---
 
-## 🔄 Processo de Refatoração
+## 🛠️ Tecnologias Utilizadas
 
-> [!NOTE]
-> Esta branch (`legacy`) preserva o código original da aplicação desktop em Java Swing com arquivos `.txt`.
-> A versão moderna refatorada com **Spring Boot 3**, **Spring Data JPA (H2/PostgreSQL)**, **Spring Security (JWT/BCrypt)** e **REST API** está sendo desenvolvida na branch `feature/spring-boot`.
+* **Linguagem:** Java 25 LTS
+* **Framework:** Spring Boot 4 (4.0.7)
+* **Persistência & ORM:** Spring Data JPA / Hibernate
+* **Banco de Dados:** H2 Database (em memória)
+* **Validação de Dados:** Jakarta Bean Validation (`@Valid`, `@NotBlank`, `@Email`, etc.)
+* **Produtividade:** Lombok
+* **Gerenciador de Build:** Apache Maven com Maven Wrapper (`mvnw`)
+
+---
