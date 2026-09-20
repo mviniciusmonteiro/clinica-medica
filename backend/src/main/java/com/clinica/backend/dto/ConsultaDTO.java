@@ -3,6 +3,7 @@ package com.clinica.backend.dto;
 import java.time.LocalDateTime;
 import com.clinica.backend.domain.Consulta;
 import jakarta.validation.constraints.NotNull;
+import com.clinica.backend.domain.enums.StatusConsulta;
 
 public record ConsultaDTO(
         Long id,
@@ -17,6 +18,8 @@ public record ConsultaDTO(
 
         String medicoNome,
 
+        StatusConsulta status,
+
         String observacoes) {
 
     public static ConsultaDTO toDTO(Consulta consulta) {
@@ -27,6 +30,7 @@ public record ConsultaDTO(
                 consulta.getPaciente().getNome(),
                 consulta.getMedico().getId(),
                 consulta.getMedico().getNome(),
+                consulta.getStatus(),
                 consulta.getObservacoes());
     }
 }

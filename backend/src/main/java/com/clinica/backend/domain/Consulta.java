@@ -3,6 +3,7 @@ package com.clinica.backend.domain;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.*;
+import com.clinica.backend.domain.enums.StatusConsulta;
 
 @Entity
 @Table(name = "tb_consulta")
@@ -26,6 +27,10 @@ public class Consulta {
     @ManyToOne
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusConsulta status = StatusConsulta.AGENDADA;
 
     private String observacoes;
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.clinica.backend.domain.Consulta;
 import com.clinica.backend.domain.Medico;
 import com.clinica.backend.domain.Paciente;
+import com.clinica.backend.domain.enums.StatusConsulta;
 import com.clinica.backend.dto.ConsultaDTO;
 import com.clinica.backend.exception.RecursoNaoEncontradoException;
 import com.clinica.backend.exception.RegraDeNegocioException;
@@ -34,9 +35,14 @@ public class ConsultaService {
         consulta.setDataHora(dto.dataHora());
         consulta.setPaciente(paciente);
         consulta.setMedico(medico);
+        consulta.setStatus(StatusConsulta.AGENDADA);
         consulta.setObservacoes(dto.observacoes());
 
         return consultaRepository.save(consulta);
+    }
+
+    public List<Consulta> listarPorMedicoOuPacienteOuStatus(Long medicoId, Long pacienteId, StatusConsulta status) {
+        return consultaRepository.buscarComFiltros(medicoId, pacienteId, status);
     }
 
     public List<Consulta> listarTodas() {
@@ -76,6 +82,11 @@ public class ConsultaService {
 
     public void cancelar(Long id) {
         Consulta consulta = buscarPorId(id);
-        consultaRepository.delete(consulta);
+        if (consulta.getStatus() == StatusConsulta.REALIZADA || consulta.getStatus() == StatusConsulta.CANCELADA) {
+            throw new RegraDeNegocioException(
+                    "Não é possível cancelar uma consulta que já foi realizada ou cancelada.");
+        }
+        consulta.setStatus(StatusConsulta.CANCELADA);
+        consultaRepository.save(consulta);
     }
 }

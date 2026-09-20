@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import com.clinica.backend.domain.enums.StatusConsulta;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,9 +46,23 @@ public class ConsultaController {
     }
 
     // 2. Listar Todas as Consultas (GET /api/consultas)
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ConsultaDTO>> listarTodas() {
         List<ConsultaDTO> lista = consultaService.listarTodas().stream()
+                .map(ConsultaDTO::toDTO)
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ConsultaDTO>> listarPorMedicoOuPacienteOuStatus(
+            @RequestParam(required = false) Long medicoId,
+            @RequestParam(required = false) Long pacienteId,
+            @RequestParam(required = false) StatusConsulta status) {
+
+        List<ConsultaDTO> lista = consultaService.listarPorMedicoOuPacienteOuStatus(medicoId, pacienteId, status)
+                .stream()
                 .map(ConsultaDTO::toDTO)
                 .toList();
 
